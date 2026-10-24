@@ -25,8 +25,8 @@ export const LandingPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'docker' | 'clone'>('docker');
 
   const dockerCommand = `docker compose up -d`;
-  const gitCommand = `git clone https://github.com/securepm/securepm.git
-cd securepm && docker compose up -d`;
+  const gitCommand = `git clone https://github.com/iam-656/SecurePM.git
+cd SecurePM && docker compose up -d`;
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -559,10 +559,10 @@ cd securepm && docker compose up -d`;
                   <div className="space-y-1">
                     <p className="text-slate-500"># Clone &amp; launch local instance</p>
                     <p>
-                      <span className="text-emerald-400">$</span> git clone https://github.com/securepm/securepm.git
+                      <span className="text-emerald-400">$</span> git clone https://github.com/iam-656/SecurePM.git
                     </p>
                     <p>
-                      <span className="text-emerald-400">$</span> cd securepm &amp;&amp; docker compose up -d
+                      <span className="text-emerald-400">$</span> cd SecurePM &amp;&amp; docker compose up -d
                     </p>
                   </div>
                 )}
