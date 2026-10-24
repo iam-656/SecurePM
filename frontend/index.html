@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SecurePM | 100% On-Premises &amp; Air-Gapped Project Management</title>
+    <meta
+      name="description"
+      content="SecurePM is a zero-cloud, air-gapped project management platform. Built for regulated industries with XSS-resistant auth, real-time WebSockets, and absolute data sovereignty."
+    />
+    <meta
+      name="keywords"
+      content="on-premises project management, air-gapped task management, secure self-hosted Jira alternative, zero cloud project tracker, enterprise task management"
+    />
+    <meta name="author" content="SecurePM Team" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SecurePM | 100% On-Premises &amp; Air-Gapped Project Management" />
+    <meta
+      property="og:description"
+      content="SecurePM is a zero-cloud, air-gapped project management platform. Built for regulated industries with XSS-resistant auth, real-time WebSockets, and absolute data sovereignty."
+    />
+    <meta property="og:image" content="/favicon.svg" />
+    <meta property="og:site_name" content="SecurePM" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SecurePM | 100% On-Premises &amp; Air-Gapped Project Management" />
+    <meta
+      name="twitter:description"
+      content="SecurePM is a zero-cloud, air-gapped project management platform. Built for regulated industries with XSS-resistant auth, real-time WebSockets, and absolute data sovereignty."
+    />
+    <meta name="twitter:image" content="/favicon.svg" />
+
+    <!-- SoftwareApplication & Product Schema (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "SecurePM",
+          "operatingSystem": "Linux, macOS, Windows (via Docker)",
+          "applicationCategory": "BusinessApplication, ProjectManagementApplication",
+          "description": "Zero-cloud, 100% on-premises, air-gapped project management platform built for regulated industries.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "100% Air-Gapped On-Premises Deployment",
+            "XSS-Resistant HttpOnly Session Authentication",
+            "Real-Time WebSocket Updates with Optimistic Locking",
+            "Local File Storage Without Cloud S3",
+            "Agile & Plan-Driven Subproject Dependencies",
+            "Granular Role-Based Access Control"
+          ]
+        },
+        {
+          "@type": "Product",
+          "name": "SecurePM On-Premises",
+          "description": "Air-gapped, zero-telemetry self-hosted Jira alternative for defense, healthcare, banking, and government.",
+          "brand": {
+            "@type": "Brand",
+            "name": "SecurePM"
+          }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

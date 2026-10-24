@@ -1,0 +1,6 @@
+-- Initial Admin Bootstrap
+-- No rows inserted. The first ADMIN user is created at application startup
+-- by AppInitializer.java (Phase 3.6) which reads the password from
+-- env var APP_BOOTSTRAP_ADMIN_PASSWORD.
+-- This file exists as a placeholder migration to document the approach.
+-- Do NOT store plaintext or static bcrypt hashes in migration files (rule 6).
