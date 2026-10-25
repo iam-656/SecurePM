@@ -17,10 +17,7 @@ import {
   Database,
   Terminal,
 } from 'lucide-react';
-import { useAuth } from '../stores/auth';
-
 export const LandingPage: React.FC = () => {
-  const { isAuthenticated } = useAuth();
   const [copiedCommand, setCopiedCommand] = useState(false);
   const [activeTab, setActiveTab] = useState<'docker' | 'clone'>('docker');
 
@@ -78,23 +75,13 @@ cd SecurePM && docker compose up -d`;
 
           {/* CTA Actions */}
           <div className="flex items-center gap-3">
-            {isAuthenticated ? (
-              <Link
-                to="/projects"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all shadow-md shadow-emerald-500/20 active:scale-95"
-              >
-                <span>Open Workspace</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            ) : (
-              <Link
-                to="/guide"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all shadow-md shadow-emerald-500/20 active:scale-95"
-              >
-                <span>Get Started</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </Link>
-            )}
+            <Link
+              to="/guide"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all shadow-md shadow-emerald-500/20 active:scale-95"
+            >
+              <span>Get Started</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
       </header>
@@ -136,10 +123,10 @@ cd SecurePM && docker compose up -d`;
             {/* Hero CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
               <Link
-                to={isAuthenticated ? '/projects' : '/guide'}
+                to="/guide"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow-xl shadow-emerald-500/25 transition-all active:scale-95"
               >
-                <span>{isAuthenticated ? 'Enter Workspace' : 'Get Started'}</span>
+                <span>Get Started</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </Link>
               <a
@@ -654,10 +641,10 @@ cd SecurePM && docker compose up -d`;
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                to={isAuthenticated ? '/projects' : '/guide'}
+                to="/guide"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow-xl shadow-emerald-500/25 transition-all active:scale-95"
               >
-                <span>{isAuthenticated ? 'Open Workspace' : 'Get Started'}</span>
+                <span>Get Started</span>
                 <ArrowRight className="w-5 h-5 stroke-[2.5]" />
               </Link>
             </div>
