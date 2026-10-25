@@ -21,6 +21,8 @@ import {
   ArrowRight,
   Menu,
   X,
+  KeyRound,
+  Code2,
 } from 'lucide-react';
 import { useAuth } from '../stores/auth';
 
@@ -45,6 +47,13 @@ const sections: { category: string; items: SectionItem[] }[] = [
     items: [
       { id: 'quickstart', title: 'Single-User Localhost', icon: Monitor },
       { id: 'local-network', title: 'Local Network (Peer/LAN)', icon: Wifi },
+    ],
+  },
+  {
+    category: 'API & Authentication',
+    items: [
+      { id: 'auth-endpoints', title: 'Sign-In & Auth Endpoints', icon: KeyRound },
+      { id: 'core-endpoints', title: 'Essential Core Endpoints', icon: Code2 },
     ],
   },
   {
@@ -138,13 +147,14 @@ export const SelfHostingGuidePage: React.FC = () => {
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             ) : (
-              <Link
-                to="/login"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors"
-                title="Sign in to your local workspace"
+              <a
+                href="#auth-endpoints"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 border border-emerald-500/20 transition-colors"
+                title="View Authentication & API Endpoints"
               >
-                <span>Portal Login</span>
-              </Link>
+                <KeyRound className="w-3.5 h-3.5" />
+                <span>Auth Endpoints</span>
+              </a>
             )}
 
             <button
@@ -859,13 +869,302 @@ export const SelfHostingGuidePage: React.FC = () => {
               </div>
             </section>
 
-            {/* 7. STOPPING & CLEANUP */}
+            {/* 7. AUTHENTICATION & SIGN-IN ENDPOINTS */}
+            <section id="auth-endpoints" className="scroll-mt-24 space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-bold">
+                  <KeyRound className="w-5 h-5" />
+                </div>
+                <h2 className="text-2xl font-bold text-white tracking-tight">7. Sign-In &amp; Authentication Endpoints</h2>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2 text-xs text-slate-300">
+                <p className="font-semibold text-white">XSS-Resistant Cookie Session Architecture</p>
+                <p className="text-slate-400 leading-relaxed">
+                  SecurePM enforces strict server-side Vert.x session cookies (<code className="text-emerald-400 font-mono">session_id</code>). 
+                  Tokens are never stored in client <code className="font-mono">localStorage</code> or exposed to frontend scripts.
+                  All subsequent REST calls and real-time WebSocket upgrade handshakes authenticate automatically via this cookie.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {/* POST /api/auth/login */}
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        POST
+                      </span>
+                      <code className="text-sm font-bold text-white font-mono">/api/auth/login</code>
+                    </div>
+                    <span className="text-xs text-slate-400">Authenticates credentials and establishes session</span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+                      Request Body (JSON)
+                    </span>
+                    <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-200 overflow-x-auto">
+{`{
+  "username": "admin",
+  "password": "ChangeMeNow123!"
+}`}
+                    </pre>
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+                      Response Headers &amp; Body (200 OK)
+                    </span>
+                    <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-2">
+                      <p className="text-cyan-400">Set-Cookie: session_id=d6e4b8a2-...; Path=/; HttpOnly; SameSite=Strict; Secure</p>
+                      <pre className="text-emerald-400 overflow-x-auto">
+{`{
+  "id": 1,
+  "username": "admin",
+  "email": "admin@securepm.local",
+  "role": "ADMIN"
+}`}
+                      </pre>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                        cURL Example
+                      </span>
+                      <button
+                        onClick={() =>
+                          copyToClipboard(
+                            `curl -k -i -X POST https://localhost/api/auth/login \\
+  -H "Content-Type: application/json" \\
+  -c cookies.txt \\
+  -d '{"username":"admin","password":"ChangeMeNow123!"}'`,
+                            'curl-login'
+                          )
+                        }
+                        className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
+                      >
+                        {copiedKey === 'curl-login' ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            <span className="text-emerald-400">Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Copy cURL</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto">
+{`curl -k -i -X POST https://localhost/api/auth/login \\
+  -H "Content-Type: application/json" \\
+  -c cookies.txt \\
+  -d '{"username":"admin","password":"ChangeMeNow123!"}'`}
+                    </pre>
+                  </div>
+                </div>
+
+                {/* GET /api/auth/me */}
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                        GET
+                      </span>
+                      <code className="text-sm font-bold text-white font-mono">/api/auth/me</code>
+                    </div>
+                    <span className="text-xs text-slate-400">Validates session cookie and retrieves current user profile</span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                        cURL Example (With Session Cookie)
+                      </span>
+                      <button
+                        onClick={() =>
+                          copyToClipboard('curl -k -X GET https://localhost/api/auth/me -b cookies.txt', 'curl-me')
+                        }
+                        className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
+                      >
+                        {copiedKey === 'curl-me' ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            <span className="text-emerald-400">Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Copy cURL</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto">
+                      curl -k -X GET https://localhost/api/auth/me -b cookies.txt
+                    </pre>
+                  </div>
+                </div>
+
+                {/* POST /api/auth/logout */}
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                        POST
+                      </span>
+                      <code className="text-sm font-bold text-white font-mono">/api/auth/logout</code>
+                    </div>
+                    <span className="text-xs text-slate-400">Terminates session on server and expires cookie</span>
+                  </div>
+
+                  <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto">
+                    curl -k -i -X POST https://localhost/api/auth/logout -b cookies.txt
+                  </pre>
+                </div>
+              </div>
+            </section>
+
+            {/* 8. ESSENTIAL CORE API ENDPOINTS */}
+            <section id="core-endpoints" className="scroll-mt-24 space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center font-bold">
+                  <Code2 className="w-5 h-5" />
+                </div>
+                <h2 className="text-2xl font-bold text-white tracking-tight">8. Essential Core Endpoints</h2>
+              </div>
+
+              <div className="space-y-4">
+                {/* Projects Endpoints Table */}
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+                  <h4 className="font-bold text-slate-200 text-sm flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-emerald-400" />
+                    <span>Projects &amp; Sub-Projects API</span>
+                  </h4>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left font-mono text-xs">
+                      <thead>
+                        <tr className="border-b border-slate-800 text-slate-400">
+                          <th className="pb-2 font-semibold">Method</th>
+                          <th className="pb-2 font-semibold">Endpoint</th>
+                          <th className="pb-2 font-semibold">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                        <tr>
+                          <td className="py-2.5 text-cyan-400 font-bold">GET</td>
+                          <td className="py-2.5">/api/projects</td>
+                          <td className="py-2.5 font-sans text-slate-400">List all projects accessible to caller</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2.5 text-emerald-400 font-bold">POST</td>
+                          <td className="py-2.5">/api/projects</td>
+                          <td className="py-2.5 font-sans text-slate-400">Create new project or sub-project</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2.5 text-cyan-400 font-bold">GET</td>
+                          <td className="py-2.5">/api/projects/&#123;id&#125;</td>
+                          <td className="py-2.5 font-sans text-slate-400">Get project details with sub-projects &amp; members</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2.5 text-amber-400 font-bold">PUT</td>
+                          <td className="py-2.5">/api/projects/&#123;id&#125;</td>
+                          <td className="py-2.5 font-sans text-slate-400">Update project name, key, or description</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Tasks & Kanban API */}
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+                  <h4 className="font-bold text-slate-200 text-sm flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                    <span>Tasks &amp; Kanban Workflow API</span>
+                  </h4>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left font-mono text-xs">
+                      <thead>
+                        <tr className="border-b border-slate-800 text-slate-400">
+                          <th className="pb-2 font-semibold">Method</th>
+                          <th className="pb-2 font-semibold">Endpoint</th>
+                          <th className="pb-2 font-semibold">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                        <tr>
+                          <td className="py-2.5 text-cyan-400 font-bold">GET</td>
+                          <td className="py-2.5">/api/projects/&#123;id&#125;/tasks</td>
+                          <td className="py-2.5 font-sans text-slate-400">Fetch tasks with filters (?status=TODO&amp;priority=HIGH)</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2.5 text-emerald-400 font-bold">POST</td>
+                          <td className="py-2.5">/api/projects/&#123;id&#125;/tasks</td>
+                          <td className="py-2.5 font-sans text-slate-400">Create new task under project</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2.5 text-purple-400 font-bold">PATCH</td>
+                          <td className="py-2.5">/api/tasks/&#123;id&#125;/status</td>
+                          <td className="py-2.5 font-sans text-slate-400">Fast Kanban column drop status change</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2.5 text-amber-400 font-bold">PUT</td>
+                          <td className="py-2.5">/api/tasks/&#123;id&#125;</td>
+                          <td className="py-2.5 font-sans text-slate-400">Full update with optimistic locking (version)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Realtime WebSockets */}
+                <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+                  <h4 className="font-bold text-slate-200 text-sm flex items-center gap-2">
+                    <Wifi className="w-4 h-4 text-emerald-400" />
+                    <span>Real-Time WebSocket Channels</span>
+                  </h4>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left font-mono text-xs">
+                      <thead>
+                        <tr className="border-b border-slate-800 text-slate-400">
+                          <th className="pb-2 font-semibold">Protocol</th>
+                          <th className="pb-2 font-semibold">WebSocket Path</th>
+                          <th className="pb-2 font-semibold">Purpose</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                        <tr>
+                          <td className="py-2.5 text-emerald-400 font-bold">WSS</td>
+                          <td className="py-2.5">/ws/projects/&#123;projectId&#125;</td>
+                          <td className="py-2.5 font-sans text-slate-400">
+                            Broadcasts live task changes, comments, and board drag-and-drops
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="py-2.5 text-emerald-400 font-bold">WSS</td>
+                          <td className="py-2.5">/ws/notifications</td>
+                          <td className="py-2.5 font-sans text-slate-400">
+                            User notifications for invitations and task assignments
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 9. STOPPING & CLEANUP */}
             <section id="cleanup" className="scroll-mt-24 space-y-6">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center font-bold">
                   <Trash2 className="w-5 h-5" />
                 </div>
-                <h2 className="text-2xl font-bold text-white tracking-tight">7. Stopping &amp; Data Cleanup</h2>
+                <h2 className="text-2xl font-bold text-white tracking-tight">9. Stopping &amp; Data Cleanup</h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -929,7 +1228,7 @@ export const SelfHostingGuidePage: React.FC = () => {
             <a href="https://github.com/iam-656/SecurePM" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">
               GitHub Repository
             </a>
-            <Link to="/login" className="hover:text-emerald-400 transition-colors">Sign In</Link>
+            <a href="#auth-endpoints" className="hover:text-emerald-400 transition-colors">Auth Endpoints</a>
           </div>
         </div>
       </footer>

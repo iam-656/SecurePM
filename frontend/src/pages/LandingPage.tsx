@@ -721,7 +721,7 @@ cd SecurePM && docker compose up -d`;
             <div className="flex items-center gap-6">
               <a href="#security" className="hover:text-slate-400 transition-colors">Security Overview</a>
               <a href="#architecture" className="hover:text-slate-400 transition-colors">Network Isolation</a>
-              <Link to="/login" className="hover:text-slate-400 transition-colors">Portal Login</Link>
+              <Link to="/guide#auth-endpoints" className="hover:text-emerald-400 transition-colors">API &amp; Auth Guide</Link>
             </div>
           </div>
         </div>

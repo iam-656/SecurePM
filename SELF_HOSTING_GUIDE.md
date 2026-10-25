@@ -12,7 +12,8 @@ SecurePM is built for **100% on-premises, air-gapped operation** with **zero ext
 3. [Local Network Setup (Sharing with Peers / LAN)](#3-local-network-setup-sharing-with-peers--lan)
 4. [First-Time Administration](#4-first-time-administration)
 5. [Troubleshooting & Common Issues](#5-troubleshooting--common-issues)
-6. [Stopping and Cleaning Up](#6-stopping-and-cleaning-up)
+6. [Authentication & Essential API Endpoints](#6-authentication--essential-api-endpoints)
+7. [Stopping and Cleaning Up](#7-stopping-and-cleaning-up)
 
 ---
 
@@ -213,9 +214,81 @@ Once you log in as the default administrator:
   docker compose restart quarkus-app
   ```
 
+## 6. Authentication & Essential API Endpoints
+
+SecurePM operates with strict Vert.x HTTP-only session cookies (`session_id`). Tokens are never stored in client `localStorage` or exposed to frontend scripts. All REST calls and real-time WebSocket connections authenticate via this cookie.
+
+### 6.1 Authentication Endpoints
+
+#### Sign In (`POST /api/auth/login`)
+- **URL**: `https://<host>/api/auth/login`
+- **Method**: `POST`
+- **Header**: `Content-Type: application/json`
+- **Request Body**:
+  ```json
+  {
+    "username": "admin",
+    "password": "ChangeMeNow123!"
+  }
+  ```
+- **Response Headers**:
+  ```http
+  Set-Cookie: session_id=<UUID>; Path=/; HttpOnly; SameSite=Strict; Secure
+  ```
+- **Response Body (`200 OK`)**:
+  ```json
+  {
+    "id": 1,
+    "username": "admin",
+    "email": "admin@securepm.local",
+    "role": "ADMIN"
+  }
+  ```
+- **cURL Command**:
+  ```bash
+  curl -k -i -X POST https://localhost/api/auth/login \
+    -H "Content-Type: application/json" \
+    -c cookies.txt \
+    -d '{"username":"admin","password":"ChangeMeNow123!"}'
+  ```
+
+#### Check Active Session (`GET /api/auth/me`)
+- **URL**: `https://<host>/api/auth/me`
+- **Method**: `GET`
+- **cURL Command**:
+  ```bash
+  curl -k -X GET https://localhost/api/auth/me -b cookies.txt
+  ```
+
+#### Sign Out (`POST /api/auth/logout`)
+- **URL**: `https://<host>/api/auth/logout`
+- **Method**: `POST`
+- **cURL Command**:
+  ```bash
+  curl -k -i -X POST https://localhost/api/auth/logout -b cookies.txt
+  ```
+
 ---
 
-## 6. Stopping and Cleaning Up
+### 6.2 Essential Core API Endpoints
+
+| Category | Method | Endpoint | Description |
+| :--- | :--- | :--- | :--- |
+| **Projects** | `GET` | `/api/projects` | List all projects accessible to the user |
+| **Projects** | `POST` | `/api/projects` | Create a new project or sub-project |
+| **Projects** | `GET` | `/api/projects/{id}` | Get project details, members, & sub-projects |
+| **Tasks** | `GET` | `/api/projects/{id}/tasks` | Fetch tasks with query filters (`status`, `priority`) |
+| **Tasks** | `POST` | `/api/projects/{id}/tasks` | Create task under project |
+| **Tasks** | `PATCH` | `/api/tasks/{id}/status` | Kanban drag-and-drop fast status update |
+| **Tasks** | `PUT` | `/api/tasks/{id}` | Update task with optimistic locking (`version`) |
+| **WebSockets** | `WSS` | `/ws/projects/{projectId}` | Live bi-directional board updates (passes session cookie) |
+| **WebSockets** | `WSS` | `/ws/notifications` | Real-time user notifications |
+| **Users (Admin)** | `GET` | `/api/users` | List system users |
+| **Users (Admin)** | `POST` | `/api/users` | Provision user account (`username`, `email`, `role`) |
+
+---
+
+## 7. Stopping and Cleaning Up
 
 ### Stop the Application (Preserving Data)
 To stop all containers while preserving your database and uploaded attachments:
