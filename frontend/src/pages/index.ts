@@ -1,3 +1,5 @@
+export * from './LandingPage';
+export * from './SelfHostingGuidePage';
 export * from './LoginPage';
 export * from './DashboardPage';
 export * from './ProjectPage';

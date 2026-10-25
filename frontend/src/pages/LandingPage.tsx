@@ -57,6 +57,7 @@ cd SecurePM && docker compose up -d`;
           </div>
 
           {/* Navigation Anchors */}
+          {/* Navigation Anchors */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
             <a href="#features" className="hover:text-emerald-400 transition-colors">
               Features
@@ -70,9 +71,9 @@ cd SecurePM && docker compose up -d`;
             <a href="#deployment" className="hover:text-emerald-400 transition-colors">
               Deployment
             </a>
-            <a href="#compliance" className="hover:text-emerald-400 transition-colors">
-              Compliance
-            </a>
+            <Link to="/guide" className="hover:text-emerald-400 transition-colors font-medium text-emerald-400 flex items-center gap-1">
+              <span>Guidelines</span>
+            </Link>
           </nav>
 
           {/* CTA Actions */}
@@ -86,21 +87,13 @@ cd SecurePM && docker compose up -d`;
                 <ArrowRight className="w-4 h-4" />
               </Link>
             ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/login"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all shadow-md shadow-emerald-500/20 active:scale-95"
-                >
-                  <span>Get Started</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </Link>
-              </>
+              <Link
+                to="/guide"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all shadow-md shadow-emerald-500/20 active:scale-95"
+              >
+                <span>Get Started</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
             )}
           </div>
         </div>
@@ -143,10 +136,10 @@ cd SecurePM && docker compose up -d`;
             {/* Hero CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
               <Link
-                to={isAuthenticated ? '/projects' : '/login'}
+                to={isAuthenticated ? '/projects' : '/guide'}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow-xl shadow-emerald-500/25 transition-all active:scale-95"
               >
-                <span>{isAuthenticated ? 'Enter Workspace' : 'Get Started / Deploy Now'}</span>
+                <span>{isAuthenticated ? 'Enter Workspace' : 'Get Started'}</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </Link>
               <a
@@ -661,10 +654,10 @@ cd SecurePM && docker compose up -d`;
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                to={isAuthenticated ? '/projects' : '/login'}
+                to={isAuthenticated ? '/projects' : '/guide'}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow-xl shadow-emerald-500/25 transition-all active:scale-95"
               >
-                <span>{isAuthenticated ? 'Open Workspace' : 'Get Started / Deploy Now'}</span>
+                <span>{isAuthenticated ? 'Open Workspace' : 'Get Started'}</span>
                 <ArrowRight className="w-5 h-5 stroke-[2.5]" />
               </Link>
             </div>
@@ -703,10 +696,10 @@ cd SecurePM && docker compose up -d`;
             <div>
               <h4 className="text-white font-semibold mb-3">Developers</h4>
               <ul className="space-y-2">
-                <li><a href="/login" className="hover:text-emerald-400 transition-colors">API Endpoints</a></li>
+                <li><Link to="/guide" className="hover:text-emerald-400 transition-colors">Self-Hosting Guide</Link></li>
                 <li><a href="#deployment" className="hover:text-emerald-400 transition-colors">Docker Compose</a></li>
+                <li><a href="https://github.com/iam-656/SecurePM" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">GitHub Repository</a></li>
                 <li><a href="#compliance" className="hover:text-emerald-400 transition-colors">Air-Gap Verification</a></li>
-                <li><a href="/login" className="hover:text-emerald-400 transition-colors">Flyway Migrations</a></li>
               </ul>
             </div>
 

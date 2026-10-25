@@ -3,6 +3,7 @@ import { AuthProvider } from './stores/auth';
 import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
 import { AppLayout } from './components/AppLayout';
 import { LandingPage } from './pages/LandingPage';
+import { SelfHostingGuidePage } from './pages/SelfHostingGuidePage';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ProjectPage } from './pages/ProjectPage';
@@ -15,8 +16,10 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public marketing landing page */}
+          {/* Public marketing & documentation routes */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/guide" element={<SelfHostingGuidePage />} />
+          <Route path="/docs" element={<Navigate to="/guide" replace />} />
 
           {/* Public authentication route */}
           <Route
