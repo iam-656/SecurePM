@@ -18,13 +18,12 @@ import {
   Trash2,
   UserCheck,
   Layers,
-  ArrowRight,
   Menu,
   X,
   KeyRound,
   Code2,
 } from 'lucide-react';
-import { useAuth } from '../stores/auth';
+
 
 type OSType = 'linux' | 'macos' | 'windows';
 
@@ -67,7 +66,6 @@ const sections: { category: string; items: SectionItem[] }[] = [
 ];
 
 export const SelfHostingGuidePage: React.FC = () => {
-  const { isAuthenticated } = useAuth();
   const [selectedOS, setSelectedOS] = useState<OSType>('linux');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string>('overview');
@@ -138,24 +136,14 @@ export const SelfHostingGuidePage: React.FC = () => {
               <ExternalLink className="w-3 h-3 text-slate-400" />
             </a>
 
-            {isAuthenticated ? (
-              <Link
-                to="/projects"
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all shadow-sm shadow-emerald-500/20"
-              >
-                <span>Open Workspace</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            ) : (
-              <a
-                href="#auth-endpoints"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 border border-emerald-500/20 transition-colors"
-                title="View Authentication & API Endpoints"
-              >
-                <KeyRound className="w-3.5 h-3.5" />
-                <span>Auth Endpoints</span>
-              </a>
-            )}
+            <a
+              href="#auth-endpoints"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 border border-emerald-500/20 transition-colors"
+              title="View Authentication & API Endpoints"
+            >
+              <KeyRound className="w-3.5 h-3.5" />
+              <span>Auth Endpoints</span>
+            </a>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
