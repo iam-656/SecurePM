@@ -157,20 +157,18 @@ SecurePM/
 ├── nginx/                    # Local reverse proxy & SSL configuration
 │   ├── certs/                # Local SSL certificates
 │   └── nginx.conf            # Proxy routing for REST, WebSockets, and SPA
-├── docs/                     # Architectural specs, API documentation, and plans
 ├── .env.example              # Environment configuration template
 ├── docker-compose.yml        # Multi-container orchestration
+├── SELF_HOSTING_GUIDE.md     # Step-by-step self-hosting & local network guide
 └── README.md                 # User documentation
 ```
 
 ---
 
-## 📚 Documentation & Specifications
+## 📚 Guides & Deployment
 
-- 📘 [API & WebSocket Specification](docs/endpoints.md)
-- 📗 [MVP Architecture & Implementation Plan](docs/plans/securepm-mvp-plan.md)
-- 📙 [Testing Strategy & Reports](docs/plans/phase8-testing-plan.md)
-- 📕 [Codebase Standards & Rules](docs/rules.md)
+- 📖 [Self-Hosting & Local Network Setup Guide](SELF_HOSTING_GUIDE.md)
+
 
 ---
 

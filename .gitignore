@@ -38,3 +38,7 @@ yarn-error.log*
 Thumbs.db
 tmp/
 scratch/
+
+# Internal Documentation & Planning
+docs/
+
